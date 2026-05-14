@@ -8,36 +8,22 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        :root {
-            --primary: #2563eb;
-            --primary-soft: #eff6ff;
-            --parent: #7c3aed;
-            --parent-soft: #f5f3ff;
-            --child-border: #e5e7eb;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --bg: #f8fafc;
-            --line: #d7dde8;
-        }
-
         html, body {
             width: 100%;
             min-height: 100%;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            background: transparent;
-            color: var(--text);
-            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: #fff;
+            color: #172b4d;
+            overflow-x: hidden;
         }
 
         body { padding: 0; }
 
         .container {
-            background: #fff;
-            border-radius: 8px;
-            border: 1px solid #edf0f5;
-            padding: 14px 16px 12px;
             width: 100%;
-            min-height: 240px;
+            background: #fff;
+            border-radius: 0;
+            padding: 12px 16px 10px;
         }
 
         .header {
@@ -46,377 +32,520 @@
             justify-content: space-between;
             gap: 12px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #eef1f6;
             margin-bottom: 10px;
+            border-bottom: 1px solid #eef1f5;
         }
 
-        .title-wrap { display: flex; flex-direction: column; gap: 2px; }
-        .header h2 { font-size: 16px; line-height: 1.2; font-weight: 700; color: #26384f; }
-        .subtext { font-size: 11px; color: var(--muted); }
+        .title-wrap { min-width: 0; }
 
-        .controls { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .header h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #253858;
+            line-height: 1.2;
+        }
+
+        .sub-title {
+            margin-top: 2px;
+            font-size: 11px;
+            color: #6b778c;
+        }
+
+        .controls { display: flex; gap: 6px; align-items: center; }
+
         .btn {
-            height: 30px;
-            padding: 0 12px;
-            border: 1px solid #cfd7e6;
-            border-radius: 6px;
+            padding: 7px 14px;
+            border: 1px solid #dfe1e6;
             background: #fff;
-            color: #334155;
+            border-radius: 7px;
+            cursor: pointer;
             font-size: 12px;
             font-weight: 600;
-            cursor: pointer;
-        }
-        .btn:hover { background: #f8fafc; }
-        .btn-primary { background: var(--primary); border-color: var(--primary); color: #fff; }
-        .btn-primary:hover { background: #1d4ed8; }
-
-        .summary-bar {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 8px;
-            margin-bottom: 10px;
+            color: #42526e;
+            transition: 0.15s ease;
+            white-space: nowrap;
         }
 
-        .summary-card {
-            border: 1px solid #edf0f5;
-            background: #fbfcff;
-            border-radius: 7px;
-            padding: 8px 10px;
-            min-height: 44px;
-        }
-        .summary-label { font-size: 10px; color: var(--muted); margin-bottom: 2px; }
-        .summary-value { font-size: 13px; font-weight: 700; color: #26384f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .btn:hover { background: #f4f5f7; }
 
-        .hierarchy-wrap {
-            background: var(--bg);
-            border: 1px solid #eef1f6;
-            border-radius: 8px;
-            padding: 8px;
-            max-height: 360px;
+        .btn-primary {
+            background: #2f5bea;
+            border-color: #2f5bea;
+            color: #fff;
+        }
+
+        .btn-primary:hover { background: #244bd6; }
+
+        .tree-shell {
+            width: 100%;
             overflow: auto;
+            background: #f8fafc;
+            border: 1px solid #edf0f5;
+            border-radius: 10px;
+            padding: 16px 12px 12px;
+            max-height: 330px;
         }
 
-        .hierarchy-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-        .tree-item { position: relative; }
-        .tree-row {
-            display: grid;
-            grid-template-columns: 28px minmax(220px, 1fr) 90px 110px;
-            align-items: center;
-            gap: 8px;
-            min-height: 44px;
+        .tree {
+            display: inline-flex;
+            justify-content: center;
+            min-width: 100%;
+            padding: 2px 8px 6px;
+        }
+
+        .tree ul {
+            padding-top: 26px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 10px;
+        }
+
+        .tree li {
+            position: relative;
+            padding: 24px 2px 0;
+            list-style: none;
+            text-align: center;
+        }
+
+        .tree > ul { padding-top: 0; }
+        .tree > ul > li { padding-top: 0; }
+
+        .tree li::before,
+        .tree li::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 50%;
+            border-top: 2px solid #c9d4e5;
+            width: calc(50% + 5px);
+            height: 24px;
+        }
+
+        .tree li::after {
+            right: auto;
+            left: 50%;
+            border-left: 2px solid #c9d4e5;
+        }
+
+        .tree > ul > li::before,
+        .tree > ul > li::after,
+        .tree li:only-child::before,
+        .tree li:only-child::after { display: none; }
+
+        .tree li:only-child { padding-top: 0; }
+        .tree li:first-child::before,
+        .tree li:last-child::after { border: 0 none; }
+        .tree li:last-child::before { border-right: 2px solid #c9d4e5; border-radius: 0 7px 0 0; }
+        .tree li:first-child::after { border-radius: 7px 0 0 0; }
+
+        .tree ul ul::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            border-left: 2px solid #c9d4e5;
+            width: 0;
+            height: 26px;
+        }
+
+        .node {
+            display: inline-flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 190px;
+            max-width: 210px;
+            min-height: 88px;
+            padding: 12px 14px;
+            border: 1px solid #dfe4ea;
+            border-radius: 10px;
             background: #fff;
-            border: 1px solid var(--child-border);
-            border-radius: 7px;
-            padding: 7px 9px;
             cursor: pointer;
-            transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+            text-align: left;
+            box-shadow: 0 2px 6px rgba(9, 30, 66, 0.05);
+            transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
         }
-        .tree-row:hover { border-color: var(--primary); box-shadow: 0 2px 8px rgba(37,99,235,.10); }
-        .tree-row.current { border-color: var(--primary); background: var(--primary-soft); }
-        .tree-row.parent { border-color: var(--parent); background: var(--parent-soft); }
 
-        .level-dot {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            font-size: 11px;
+        .node:hover {
+            transform: translateY(-1px);
+            border-color: #2f5bea;
+            box-shadow: 0 8px 18px rgba(47, 91, 234, 0.12);
+        }
+
+        .node.current {
+            border: 2px solid #2f5bea;
+            background: linear-gradient(135deg, #f0f6ff 0%, #e1eeff 100%);
+            box-shadow: 0 6px 16px rgba(47, 91, 234, 0.16);
+        }
+
+        .node.parent {
+            border: 2px solid #7c3aed;
+            background: linear-gradient(135deg, #faf7ff 0%, #f0e9ff 100%);
+        }
+
+        .node-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .node-name {
             font-weight: 700;
-            background: #eef2f7;
-            color: #64748b;
+            font-size: 12.5px;
+            line-height: 1.25;
+            color: #172b4d;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-        .tree-row.current .level-dot { background: #dbeafe; color: var(--primary); }
-        .tree-row.parent .level-dot { background: #ede9fe; color: var(--parent); }
 
-        .acc-main { min-width: 0; }
-        .acc-name { font-size: 13px; font-weight: 700; color: #1f2937; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .acc-meta { margin-top: 2px; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        .badge {
-            justify-self: start;
-            display: inline-block;
-            padding: 3px 7px;
+        .role-pill {
+            flex: 0 0 auto;
+            font-size: 9.5px;
+            font-weight: 700;
+            color: #2f5bea;
+            background: #eaf0ff;
+            border: 1px solid #c8d6ff;
             border-radius: 999px;
-            font-size: 10px;
-            font-weight: 700;
-            max-width: 90px;
+            padding: 2px 6px;
+            line-height: 1.2;
+        }
+
+        .role-pill.parent-pill { color: #6d28d9; background: #f3e8ff; border-color: #ddd6fe; }
+        .role-pill.member-pill { color: #5e6c84; background: #f4f5f7; border-color: #dfe1e6; }
+
+        .node-meta {
+            font-size: 11px;
+            color: #5e6c84;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .meta-line {
+            display: block;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .badge-customer { background: #d1fae5; color: #065f46; }
+
+        .badge {
+            align-self: flex-start;
+            display: inline-block;
+            padding: 3px 7px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .badge-customer { background: #dcfce7; color: #166534; }
         .badge-prospect { background: #fef3c7; color: #92400e; }
-        .badge-default { background: #e5e7eb; color: #374151; }
+        .badge-default { background: #edf2f7; color: #42526e; }
 
-        .role-label { font-size: 10px; color: var(--muted); justify-self: end; white-space: nowrap; }
-
-        .children { list-style: none; margin-top: 6px; margin-left: 22px; padding-left: 16px; border-left: 2px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
-
-        .loading, .empty-state {
-            height: 210px;
+        .footer-bar {
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--muted);
-            font-size: 13px;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #6b778c;
         }
+
+        .legend { display: flex; gap: 12px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 3px; border: 2px solid; }
+        .legend-dot.current { background: #e1eeff; border-color: #2f5bea; }
+        .legend-dot.parent { background: #f0e9ff; border-color: #7c3aed; }
+        .legend-dot.child { background: #fff; border-color: #dfe4ea; }
+
+        .loading, .empty-state {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 180px;
+            color: #6b778c;
+            text-align: center;
+        }
+
         .spinner {
             width: 28px;
             height: 28px;
-            border: 3px solid #e5e7eb;
-            border-top-color: var(--primary);
+            margin: 0 auto;
+            border: 3px solid #dfe4ea;
+            border-top-color: #2f5bea;
             border-radius: 50%;
-            animation: spin .8s linear infinite;
-            margin: 0 auto 10px;
+            animation: spin 0.8s linear infinite;
         }
+
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .footer-note {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            padding-top: 8px;
-            font-size: 10.5px;
-            color: var(--muted);
-        }
-
-        @media (max-width: 850px) {
-            .summary-bar { grid-template-columns: 1fr; }
-            .tree-row { grid-template-columns: 24px minmax(160px, 1fr) 80px; }
-            .role-label { display: none; }
+        @media (max-width: 900px) {
+            .node { min-width: 170px; max-width: 180px; }
+            .tree ul { gap: 6px; }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <div class="title-wrap">
-            <h2>Account Hierarchy</h2>
-            <div class="subtext">Compact parent and member account view</div>
+    <div class="container">
+        <div class="header">
+            <div class="title-wrap">
+                <h2>Account Hierarchy</h2>
+                <div class="sub-title">Box view of parent and member accounts</div>
+            </div>
+            <div class="controls">
+                <button class="btn btn-primary" onclick="refreshTree()">Refresh</button>
+            </div>
         </div>
-        <div class="controls">
-            <button class="btn btn-primary" onclick="refreshTree()">Refresh</button>
+
+        <div id="content">
+            <div class="loading">
+                <div>
+                    <div class="spinner"></div>
+                    <p style="margin-top:10px;">Loading hierarchy...</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="summary"></div>
-    <div id="content">
-        <div class="loading"><div><div class="spinner"></div><p>Loading hierarchy...</p></div></div>
-    </div>
-    <div class="footer-note">
-        <span>Click any account to open the CRM record.</span>
-        <span id="recordCount"></span>
-    </div>
-</div>
+    <script>
+        let currentAccountId = null;
+        let allAccounts = {};
+        let totalAccountsLoaded = 0;
 
-<script>
-    let currentAccountId = null;
-    let allAccounts = {};
-    let rootAccountId = null;
-
-    ZOHO.embeddedApp.on("PageLoad", function(data) {
-        console.log("PageLoad fired", data);
-        currentAccountId = Array.isArray(data.EntityId) ? data.EntityId[0] : data.EntityId;
-        currentAccountId = currentAccountId ? String(currentAccountId) : null;
-        console.log("Current Account ID set", currentAccountId);
-
-        if (!currentAccountId) {
-            showEmpty("Account ID was not received from Zoho CRM.");
-            return;
+        function debugLog(message, data) {
+            console.log(message, data || "");
         }
-        loadHierarchy();
-    });
 
-    ZOHO.embeddedApp.init();
+        ZOHO.embeddedApp.on("PageLoad", function(data) {
+            debugLog("PageLoad fired", data);
 
-    async function loadHierarchy() {
-        try {
-            allAccounts = {};
-            rootAccountId = null;
-            setLoading("Loading hierarchy...");
+            if (Array.isArray(data.EntityId)) {
+                currentAccountId = data.EntityId[0];
+            } else {
+                currentAccountId = data.EntityId;
+            }
 
-            console.log("Calling getRecord for", currentAccountId);
-            const currentResp = await ZOHO.CRM.API.getRecord({ Entity: "Accounts", RecordID: currentAccountId });
-            console.log("getRecord response received", currentResp);
-
-            if (!currentResp || !currentResp.data || !currentResp.data[0]) {
-                showEmpty("Could not load account details from Zoho CRM.");
+            if (!currentAccountId) {
+                showEmpty("Account ID was not received from Zoho CRM PageLoad.");
                 return;
             }
 
-            let currentAccount = currentResp.data[0];
-            allAccounts[String(currentAccount.id)] = currentAccount;
+            currentAccountId = String(currentAccountId);
+            debugLog("Current Account ID set", currentAccountId);
+            loadHierarchy();
+        });
 
-            let topAccount = currentAccount;
-            let safety = 0;
-            while (topAccount.Parent_Account && topAccount.Parent_Account.id && safety < 20) {
-                const parentId = String(topAccount.Parent_Account.id);
-                const parentResp = await ZOHO.CRM.API.getRecord({ Entity: "Accounts", RecordID: parentId });
-                if (parentResp && parentResp.data && parentResp.data[0]) {
-                    topAccount = parentResp.data[0];
-                    allAccounts[String(topAccount.id)] = topAccount;
-                } else {
-                    break;
+        ZOHO.embeddedApp.init();
+
+        async function loadHierarchy() {
+            try {
+                debugLog("Calling getRecord for", currentAccountId);
+                const currentResp = await ZOHO.CRM.API.getRecord({
+                    Entity: "Accounts",
+                    RecordID: currentAccountId
+                });
+
+                debugLog("getRecord response received", currentResp);
+
+                if (!currentResp || !currentResp.data || !currentResp.data[0]) {
+                    showEmpty("Could not load account details. Check widget permissions and Account ID.");
+                    return;
                 }
-                safety++;
+
+                const currentAccount = currentResp.data[0];
+                allAccounts[String(currentAccount.id)] = currentAccount;
+
+                let topAccount = currentAccount;
+                let safety = 0;
+
+                while (topAccount.Parent_Account && topAccount.Parent_Account.id && safety < 20) {
+                    const parentId = String(topAccount.Parent_Account.id);
+                    const parentResp = await ZOHO.CRM.API.getRecord({
+                        Entity: "Accounts",
+                        RecordID: parentId
+                    });
+
+                    if (parentResp && parentResp.data && parentResp.data[0]) {
+                        topAccount = parentResp.data[0];
+                        allAccounts[String(topAccount.id)] = topAccount;
+                    } else {
+                        break;
+                    }
+                    safety++;
+                }
+
+                await fetchChildrenRecursive(String(topAccount.id));
+
+                const tree = buildTree(String(topAccount.id));
+                totalAccountsLoaded = Object.keys(allAccounts).length;
+                renderTree(tree);
+            } catch (err) {
+                console.error("Error loading hierarchy:", err);
+                showEmpty("Error loading hierarchy. Check browser console for details.");
             }
-
-            rootAccountId = String(topAccount.id);
-            await fetchChildrenRecursive(rootAccountId);
-
-            const tree = buildTree(rootAccountId);
-            renderSummary(tree);
-            renderCompactTree(tree);
-
-        } catch (err) {
-            console.error("Error loading hierarchy:", err);
-            showEmpty("Error loading hierarchy. Please check the browser console.");
         }
-    }
 
-    async function fetchChildrenRecursive(parentId) {
-        try {
-            const resp = await ZOHO.CRM.API.searchRecord({
-                Entity: "Accounts",
-                Type: "criteria",
-                Query: "(Parent_Account:equals:" + parentId + ")"
-            });
+        async function fetchChildrenRecursive(parentId) {
+            try {
+                const resp = await ZOHO.CRM.API.searchRecord({
+                    Entity: "Accounts",
+                    Type: "criteria",
+                    Query: "(Parent_Account:equals:" + parentId + ")"
+                });
 
-            if (resp && resp.data && resp.data.length > 0) {
-                resp.data.sort((a, b) => String(a.Account_Name || '').localeCompare(String(b.Account_Name || '')));
-                for (const child of resp.data) {
-                    const childId = String(child.id);
-                    if (!allAccounts[childId]) {
-                        allAccounts[childId] = child;
-                        await fetchChildrenRecursive(childId);
+                if (resp && resp.data && resp.data.length > 0) {
+                    resp.data.sort((a, b) => String(a.Account_Name || "").localeCompare(String(b.Account_Name || "")));
+
+                    for (const child of resp.data) {
+                        const childId = String(child.id);
+                        if (!allAccounts[childId]) {
+                            allAccounts[childId] = child;
+                            await fetchChildrenRecursive(childId);
+                        }
                     }
                 }
+            } catch (err) {
+                debugLog("No children found or child lookup failed for " + parentId, err);
             }
-        } catch (err) {
-            console.log("No children found or search error for", parentId, err);
         }
-    }
 
-    function buildTree(rootId) {
-        const root = allAccounts[String(rootId)];
-        if (!root) return null;
+        function buildTree(rootId) {
+            const root = allAccounts[rootId];
+            if (!root) return null;
 
-        const children = Object.keys(allAccounts)
-            .map(id => allAccounts[id])
-            .filter(acc => acc.Parent_Account && String(acc.Parent_Account.id) === String(rootId))
-            .sort((a, b) => String(a.Account_Name || '').localeCompare(String(b.Account_Name || '')))
-            .map(acc => buildTree(String(acc.id)))
-            .filter(Boolean);
+            const node = {
+                id: String(root.id),
+                name: root.Account_Name,
+                industry: root.Industry,
+                accountType: root.Account_Type,
+                phone: root.Phone,
+                children: []
+            };
 
-        return {
-            id: String(root.id),
-            name: root.Account_Name || 'Unnamed Account',
-            industry: root.Industry || '',
-            accountType: root.Account_Type || '',
-            phone: root.Phone || '',
-            children
-        };
-    }
+            const childAccounts = [];
+            for (const accId in allAccounts) {
+                const acc = allAccounts[accId];
+                if (acc.Parent_Account && String(acc.Parent_Account.id) === rootId) {
+                    childAccounts.push(acc);
+                }
+            }
 
-    function renderSummary(tree) {
-        const summary = document.getElementById('summary');
-        if (!tree) { summary.innerHTML = ''; return; }
+            childAccounts.sort((a, b) => String(a.Account_Name || "").localeCompare(String(b.Account_Name || "")));
+            node.children = childAccounts.map(acc => buildTree(String(acc.id))).filter(Boolean);
 
-        const current = allAccounts[currentAccountId] || {};
-        const count = countNodes(tree);
-        const directChildren = tree.children ? tree.children.length : 0;
-
-        summary.innerHTML =
-            '<div class="summary-bar">' +
-                '<div class="summary-card"><div class="summary-label">Top Parent</div><div class="summary-value" title="' + escapeHtml(tree.name) + '">' + escapeHtml(tree.name) + '</div></div>' +
-                '<div class="summary-card"><div class="summary-label">Current Account</div><div class="summary-value" title="' + escapeHtml(current.Account_Name || '') + '">' + escapeHtml(current.Account_Name || 'Current record') + '</div></div>' +
-                '<div class="summary-card"><div class="summary-label">Hierarchy Size</div><div class="summary-value">' + count + ' account' + (count === 1 ? '' : 's') + ' / ' + directChildren + ' direct child' + (directChildren === 1 ? '' : 'ren') + '</div></div>' +
-            '</div>';
-
-        document.getElementById('recordCount').textContent = count + ' account' + (count === 1 ? '' : 's') + ' loaded';
-    }
-
-    function renderCompactTree(tree) {
-        if (!tree) { showEmpty("No hierarchy data found."); return; }
-        document.getElementById('content').innerHTML =
-            '<div class="hierarchy-wrap"><ul class="hierarchy-list">' + renderNode(tree, 0) + '</ul></div>';
-    }
-
-    function renderNode(node, level) {
-        const isCurrent = String(node.id) === String(currentAccountId);
-        const isParent = !isCurrent && isAncestor(node.id, currentAccountId);
-        let rowClass = 'tree-row';
-        if (isCurrent) rowClass += ' current';
-        else if (isParent) rowClass += ' parent';
-
-        const badgeClass = node.accountType === 'Customer' ? 'badge-customer' :
-                           node.accountType === 'Prospect' ? 'badge-prospect' : 'badge-default';
-        const role = isCurrent ? 'Current' : isParent ? 'Parent' : level === 0 ? 'Top Parent' : 'Member';
-        const meta = [node.industry ? '🏢 ' + node.industry : '', node.phone ? '☎ ' + node.phone : ''].filter(Boolean).join('   ');
-
-        let html = '<li class="tree-item">';
-        html += '<div class="' + rowClass + '" onclick="openAccount(\'' + escapeJs(node.id) + '\')">';
-        html += '<div class="level-dot">' + (level + 1) + '</div>';
-        html += '<div class="acc-main"><div class="acc-name" title="' + escapeHtml(node.name) + '">' + escapeHtml(node.name) + '</div>';
-        html += '<div class="acc-meta" title="' + escapeHtml(meta || 'No extra details') + '">' + escapeHtml(meta || 'No extra details') + '</div></div>';
-        html += node.accountType ? '<span class="badge ' + badgeClass + '">' + escapeHtml(node.accountType) + '</span>' : '<span></span>';
-        html += '<span class="role-label">' + role + '</span>';
-        html += '</div>';
-
-        if (node.children && node.children.length > 0) {
-            html += '<ul class="children">';
-            for (const child of node.children) html += renderNode(child, level + 1);
-            html += '</ul>';
+            return node;
         }
-        html += '</li>';
-        return html;
-    }
 
-    function isAncestor(potentialAncestorId, descendantId) {
-        let current = allAccounts[String(descendantId)];
-        let safety = 0;
-        while (current && current.Parent_Account && current.Parent_Account.id && safety < 20) {
-            if (String(current.Parent_Account.id) === String(potentialAncestorId)) return true;
-            current = allAccounts[String(current.Parent_Account.id)];
-            safety++;
+        function renderTree(tree) {
+            if (!tree) {
+                showEmpty("No hierarchy data found.");
+                return;
+            }
+
+            const container = document.getElementById("content");
+            container.innerHTML =
+                '<div class="tree-shell" id="treeShell"><div class="tree"><ul>' + renderNode(tree) + '</ul></div></div>' +
+                '<div class="footer-bar">' +
+                    '<div class="legend">' +
+                        '<div class="legend-item"><span class="legend-dot current"></span><span>Current</span></div>' +
+                        '<div class="legend-item"><span class="legend-dot parent"></span><span>Parent</span></div>' +
+                        '<div class="legend-item"><span class="legend-dot child"></span><span>Member</span></div>' +
+                    '</div>' +
+                    '<div>' + totalAccountsLoaded + ' accounts loaded</div>' +
+                '</div>';
+
+            setTimeout(centerTree, 100);
         }
-        return false;
-    }
 
-    function countNodes(node) {
-        if (!node) return 0;
-        return 1 + (node.children || []).reduce((sum, child) => sum + countNodes(child), 0);
-    }
+        function renderNode(node) {
+            const isCurrent = String(node.id) === String(currentAccountId);
+            const isParent = !isCurrent && isAncestor(String(node.id), String(currentAccountId));
 
-    function openAccount(accountId) {
-        ZOHO.CRM.UI.Record.open({ Entity: "Accounts", RecordID: String(accountId) });
-    }
+            let nodeClass = "node";
+            if (isCurrent) nodeClass += " current";
+            else if (isParent) nodeClass += " parent";
 
-    function refreshTree() { loadHierarchy(); }
+            let roleText = "Member";
+            let roleClass = "member-pill";
+            if (isCurrent) { roleText = "Current"; roleClass = "current-pill"; }
+            else if (isParent) { roleText = "Parent"; roleClass = "parent-pill"; }
 
-    function setLoading(message) {
-        document.getElementById('summary').innerHTML = '';
-        document.getElementById('recordCount').textContent = '';
-        document.getElementById('content').innerHTML = '<div class="loading"><div><div class="spinner"></div><p>' + escapeHtml(message) + '</p></div></div>';
-    }
+            const badgeClass = node.accountType === "Customer" ? "badge-customer" :
+                              node.accountType === "Prospect" ? "badge-prospect" : "badge-default";
 
-    function showEmpty(message) {
-        document.getElementById('summary').innerHTML = '';
-        document.getElementById('recordCount').textContent = '';
-        document.getElementById('content').innerHTML = '<div class="empty-state"><div><div style="font-size:34px;margin-bottom:8px;">🏢</div><p>' + escapeHtml(message) + '</p></div></div>';
-    }
+            let html = '<li>';
+            html += '<div class="' + nodeClass + '" onclick="openAccount(\'' + escapeJs(node.id) + '\')" title="Open account">';
+            html += '<div class="node-head">';
+            html += '<div class="node-name" title="' + escapeHtml(node.name || "Unnamed") + '">' + escapeHtml(node.name || "Unnamed") + '</div>';
+            html += '<span class="role-pill ' + roleClass + '">' + roleText + '</span>';
+            html += '</div>';
+            html += '<div class="node-meta">';
+            if (node.industry) html += '<span class="meta-line">🏢 ' + escapeHtml(node.industry) + '</span>';
+            if (node.phone) html += '<span class="meta-line">☎ ' + escapeHtml(node.phone) + '</span>';
+            html += '</div>';
+            if (node.accountType) html += '<span class="badge ' + badgeClass + '">' + escapeHtml(node.accountType) + '</span>';
+            html += '</div>';
 
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text == null ? '' : String(text);
-        return div.innerHTML;
-    }
+            if (node.children && node.children.length > 0) {
+                html += '<ul>';
+                for (const child of node.children) {
+                    html += renderNode(child);
+                }
+                html += '</ul>';
+            }
 
-    function escapeJs(text) {
-        return String(text == null ? '' : text).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-    }
-</script>
+            html += '</li>';
+            return html;
+        }
+
+        function isAncestor(potentialAncestorId, descendantId) {
+            let current = allAccounts[descendantId];
+            let safety = 0;
+            while (current && current.Parent_Account && current.Parent_Account.id && safety < 20) {
+                const parentId = String(current.Parent_Account.id);
+                if (parentId === String(potentialAncestorId)) return true;
+                current = allAccounts[parentId];
+                safety++;
+            }
+            return false;
+        }
+
+        function centerTree() {
+            const shell = document.getElementById("treeShell");
+            if (!shell) return;
+            shell.scrollLeft = Math.max(0, (shell.scrollWidth - shell.clientWidth) / 2);
+        }
+
+        function openAccount(accountId) {
+            ZOHO.CRM.UI.Record.open({ Entity: "Accounts", RecordID: String(accountId) });
+        }
+
+        function refreshTree() {
+            allAccounts = {};
+            totalAccountsLoaded = 0;
+            document.getElementById("content").innerHTML = '<div class="loading"><div><div class="spinner"></div><p style="margin-top:10px;">Refreshing...</p></div></div>';
+            loadHierarchy();
+        }
+
+        function showEmpty(message) {
+            document.getElementById("content").innerHTML = '<div class="empty-state"><div><div style="font-size:32px;margin-bottom:8px;">🏢</div><p>' + escapeHtml(message) + '</p></div></div>';
+        }
+
+        function escapeHtml(text) {
+            if (!text) return "";
+            const div = document.createElement("div");
+            div.textContent = String(text);
+            return div.innerHTML;
+        }
+
+        function escapeJs(text) {
+            return String(text).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+        }
+    </script>
 </body>
 </html>

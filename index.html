@@ -6,19 +6,13 @@
     <title>Account Hierarchy</title>
     <script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbededAppSDK.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f7f8fa;
             padding: 20px;
             color: #2c3e50;
         }
-
         .container {
             background: white;
             border-radius: 8px;
@@ -26,7 +20,6 @@
             min-height: 400px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-
         .header {
             display: flex;
             justify-content: space-between;
@@ -35,17 +28,8 @@
             padding-bottom: 16px;
             border-bottom: 1px solid #ecf0f1;
         }
-
-        .header h2 {
-            font-size: 18px;
-            color: #2c3e50;
-        }
-
-        .controls {
-            display: flex;
-            gap: 8px;
-        }
-
+        .header h2 { font-size: 18px; color: #2c3e50; }
+        .controls { display: flex; gap: 8px; }
         .btn {
             padding: 6px 14px;
             border: 1px solid #d1d5db;
@@ -56,22 +40,9 @@
             color: #4b5563;
             transition: all 0.2s;
         }
-
-        .btn:hover {
-            background: #f3f4f6;
-            border-color: #9ca3af;
-        }
-
-        .btn-primary {
-            background: #2563eb;
-            color: white;
-            border-color: #2563eb;
-        }
-
-        .btn-primary:hover {
-            background: #1d4ed8;
-        }
-
+        .btn:hover { background: #f3f4f6; border-color: #9ca3af; }
+        .btn-primary { background: #2563eb; color: white; border-color: #2563eb; }
+        .btn-primary:hover { background: #1d4ed8; }
         .tree-container {
             overflow: auto;
             max-height: 600px;
@@ -79,14 +50,12 @@
             background: #fafbfc;
             border-radius: 6px;
         }
-
         .tree {
             display: flex;
             flex-direction: column;
             align-items: center;
             min-width: 100%;
         }
-
         .tree ul {
             padding-top: 30px;
             position: relative;
@@ -94,15 +63,12 @@
             justify-content: center;
             list-style: none;
         }
-
         .tree li {
             position: relative;
             padding: 30px 10px 0 10px;
             list-style: none;
         }
-
-        .tree li::before,
-        .tree li::after {
+        .tree li::before, .tree li::after {
             content: '';
             position: absolute;
             top: 0;
@@ -111,36 +77,19 @@
             width: 50%;
             height: 30px;
         }
-
         .tree li::after {
             right: auto;
             left: 50%;
             border-left: 2px solid #cbd5e0;
         }
-
-        .tree li:only-child::before,
-        .tree li:only-child::after {
-            display: none;
-        }
-
-        .tree li:only-child {
-            padding-top: 0;
-        }
-
-        .tree li:first-child::before,
-        .tree li:last-child::after {
-            border: 0 none;
-        }
-
+        .tree li:only-child::before, .tree li:only-child::after { display: none; }
+        .tree li:only-child { padding-top: 0; }
+        .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
         .tree li:last-child::before {
             border-right: 2px solid #cbd5e0;
             border-radius: 0 5px 0 0;
         }
-
-        .tree li:first-child::after {
-            border-radius: 5px 0 0 0;
-        }
-
+        .tree li:first-child::after { border-radius: 5px 0 0 0; }
         .tree ul ul::before {
             content: '';
             position: absolute;
@@ -150,7 +99,6 @@
             width: 0;
             height: 30px;
         }
-
         .node {
             display: inline-block;
             padding: 12px 18px;
@@ -162,26 +110,21 @@
             min-width: 180px;
             max-width: 220px;
             text-align: left;
-            position: relative;
         }
-
         .node:hover {
             border-color: #2563eb;
             box-shadow: 0 4px 12px rgba(37,99,235,0.15);
             transform: translateY(-2px);
         }
-
         .node.current {
             border-color: #2563eb;
             background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
             box-shadow: 0 4px 12px rgba(37,99,235,0.2);
         }
-
         .node.parent {
             border-color: #7c3aed;
             background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
         }
-
         .node-name {
             font-weight: 600;
             font-size: 13px;
@@ -191,7 +134,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
         .node-meta {
             font-size: 11px;
             color: #6b7280;
@@ -199,7 +141,6 @@
             flex-direction: column;
             gap: 2px;
         }
-
         .badge {
             display: inline-block;
             padding: 2px 6px;
@@ -208,22 +149,9 @@
             font-weight: 500;
             margin-top: 4px;
         }
-
-        .badge-customer {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .badge-prospect {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .badge-default {
-            background: #e5e7eb;
-            color: #374151;
-        }
-
+        .badge-customer { background: #d1fae5; color: #065f46; }
+        .badge-prospect { background: #fef3c7; color: #92400e; }
+        .badge-default { background: #e5e7eb; color: #374151; }
         .loading {
             display: flex;
             justify-content: center;
@@ -231,7 +159,6 @@
             height: 300px;
             color: #6b7280;
         }
-
         .spinner {
             width: 32px;
             height: 32px;
@@ -240,23 +167,32 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .error-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
         }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #6b7280;
+        .error-title {
+            font-weight: 600;
+            color: #991b1b;
+            margin-bottom: 8px;
         }
-
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 12px;
-            opacity: 0.5;
+        .error-details {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 11px;
+            margin-top: 12px;
+            overflow: auto;
+            max-height: 300px;
+            white-space: pre-wrap;
+            word-break: break-all;
         }
-
         .legend {
             display: flex;
             gap: 16px;
@@ -265,34 +201,16 @@
             font-size: 12px;
             color: #6b7280;
         }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
+        .legend-item { display: flex; align-items: center; gap: 6px; }
         .legend-dot {
             width: 12px;
             height: 12px;
             border-radius: 3px;
             border: 2px solid;
         }
-
-        .legend-dot.current {
-            background: #dbeafe;
-            border-color: #2563eb;
-        }
-
-        .legend-dot.parent {
-            background: #ede9fe;
-            border-color: #7c3aed;
-        }
-
-        .legend-dot.child {
-            background: white;
-            border-color: #e5e7eb;
-        }
+        .legend-dot.current { background: #dbeafe; border-color: #2563eb; }
+        .legend-dot.parent { background: #ede9fe; border-color: #7c3aed; }
+        .legend-dot.child { background: white; border-color: #e5e7eb; }
     </style>
 </head>
 <body>
@@ -332,32 +250,57 @@
     <script>
         let currentAccountId = null;
         let allAccounts = {};
+        let debugLog = [];
+
+        function addDebug(message, data) {
+            const entry = { time: new Date().toISOString(), message: message };
+            if (data !== undefined) entry.data = data;
+            debugLog.push(entry);
+            console.log('[Widget]', message, data);
+        }
 
         ZOHO.embeddedApp.on("PageLoad", function(data) {
+            addDebug('PageLoad fired', data);
+            if (!data || !data.EntityId || !data.EntityId[0]) {
+                showError('No account ID received from Zoho', { received: data });
+                return;
+            }
             currentAccountId = data.EntityId[0];
+            addDebug('Current Account ID set', currentAccountId);
             loadHierarchy();
         });
 
-        ZOHO.embeddedApp.init();
+        try {
+            ZOHO.embeddedApp.init();
+            addDebug('embeddedApp.init() called successfully');
+        } catch (initErr) {
+            showError('Failed to initialize Zoho SDK', { error: initErr.message });
+        }
 
         async function loadHierarchy() {
             try {
+                addDebug('Calling getRecord for', currentAccountId);
+
                 const currentResp = await ZOHO.CRM.API.getRecord({
                     Entity: "Accounts",
                     RecordID: currentAccountId
                 });
 
-                if (!currentResp.data || !currentResp.data[0]) {
-                    showEmpty("Could not load account details.");
+                addDebug('getRecord response received', currentResp);
+
+                if (!currentResp || !currentResp.data || !currentResp.data[0]) {
+                    showError('Account record returned empty data', { response: currentResp });
                     return;
                 }
 
                 const currentAccount = currentResp.data[0];
                 allAccounts[currentAccount.id] = currentAccount;
+                addDebug('Current account loaded', { name: currentAccount.Account_Name, id: currentAccount.id });
 
                 let topAccount = currentAccount;
                 let safety = 0;
                 while (topAccount.Parent_Account && topAccount.Parent_Account.id && safety < 20) {
+                    addDebug('Fetching parent', topAccount.Parent_Account.id);
                     const parentResp = await ZOHO.CRM.API.getRecord({
                         Entity: "Accounts",
                         RecordID: topAccount.Parent_Account.id
@@ -371,14 +314,21 @@
                     safety++;
                 }
 
+                addDebug('Top account found', { name: topAccount.Account_Name, id: topAccount.id });
                 await fetchChildrenRecursive(topAccount.id);
 
+                addDebug('Total accounts collected', Object.keys(allAccounts).length);
                 const tree = buildTree(topAccount.id);
                 renderTree(tree);
 
             } catch (err) {
-                console.error("Error loading hierarchy:", err);
-                showEmpty("Error loading hierarchy. Check console for details.");
+                addDebug('Error in loadHierarchy', err);
+                showError('Error loading hierarchy', {
+                    message: err.message || 'Unknown error',
+                    code: err.code,
+                    details: err.details,
+                    fullError: JSON.stringify(err, Object.getOwnPropertyNames(err))
+                });
             }
         }
 
@@ -390,7 +340,8 @@
                     Query: "(Parent_Account:equals:" + parentId + ")"
                 });
 
-                if (resp.data && resp.data.length > 0) {
+                if (resp && resp.data && resp.data.length > 0) {
+                    addDebug('Found children for ' + parentId, resp.data.length);
                     for (const child of resp.data) {
                         if (!allAccounts[child.id]) {
                             allAccounts[child.id] = child;
@@ -399,7 +350,7 @@
                     }
                 }
             } catch (err) {
-                console.log("No children for " + parentId + " or error:", err);
+                addDebug('No children or search error for ' + parentId, err);
             }
         }
 
@@ -428,7 +379,7 @@
 
         function renderTree(tree) {
             if (!tree) {
-                showEmpty("No hierarchy data found.");
+                showError('Could not build tree', { collectedAccounts: Object.keys(allAccounts) });
                 return;
             }
 
@@ -489,16 +440,27 @@
 
         function refreshTree() {
             allAccounts = {};
+            debugLog = [];
             document.getElementById('content').innerHTML = '<div class="loading"><div style="text-align:center;"><div class="spinner"></div><p style="margin-top:12px;">Refreshing...</p></div></div>';
             loadHierarchy();
         }
 
-        function showEmpty(message) {
-            document.getElementById('content').innerHTML = '<div class="empty-state"><div class="empty-state-icon">🏢</div><p>' + escapeHtml(message) + '</p></div>';
+        function showError(title, details) {
+            const container = document.getElementById('content');
+            container.innerHTML =
+                '<div class="error-box">' +
+                '<div class="error-title">⚠️ ' + escapeHtml(title) + '</div>' +
+                '<div style="color:#7f1d1d; font-size:13px;">The widget loaded but encountered an issue. Details below:</div>' +
+                '<div class="error-details">' + escapeHtml(JSON.stringify(details, null, 2)) + '</div>' +
+                '<div style="margin-top:12px; font-size:12px; color:#7f1d1d;">' +
+                '<strong>Debug log:</strong>' +
+                '<div class="error-details">' + escapeHtml(JSON.stringify(debugLog, null, 2)) + '</div>' +
+                '</div>' +
+                '</div>';
         }
 
         function escapeHtml(text) {
-            if (!text) return '';
+            if (text === null || text === undefined) return '';
             const div = document.createElement('div');
             div.textContent = String(text);
             return div.innerHTML;
